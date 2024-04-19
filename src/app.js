@@ -3,13 +3,18 @@ const express = require('express');
 const app = express();
 
 app.get('/products', async (req, res) => {
-    const allProducts = await productManager.getProducts();
-    res.json(allProducts);
+    const limit = parseInt(req.query.limit);
+    if (isNaN(limit) || limit <= 0) {
+        return res.status(400).json({ error: 'El  limit debe ser un número positivo.' });
+    }
+    const products = productManager.getProducts(limit); 
+    res.json(products);
 });
+
 
 app.get('/products/:pid', async (req, res) => {
     const productId = parseInt(req.params.pid);
-    const product = productManager.getProductById(productId);
+    const product = ProductManager.getProductById(productId);
     if (product) {
         res.json(product);
     } else {

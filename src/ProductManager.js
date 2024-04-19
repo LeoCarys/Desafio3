@@ -1,6 +1,7 @@
 
 const fs = require('fs').promises;
 
+
 class ProductManager {
     static lastId = 0;
 
@@ -9,6 +10,7 @@ class ProductManager {
         this.products = [];
         this.loadProducts();
     }
+     
 
     async loadProducts() {
         try {
@@ -56,7 +58,15 @@ class ProductManager {
         this.products = this.products.filter(product => product.id !== id);
         this.saveProducts();
     }
+    getProducts(limit) {
+     const allProducts = this.loadProducts();
+    const limitedProducts = allProducts.slice(0, limit);
+
+        return limitedProducts;
+    }
+
 }
+
 
 const productManager = new ProductManager('./products.json');
 
